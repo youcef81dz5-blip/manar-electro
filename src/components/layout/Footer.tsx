@@ -1,6 +1,7 @@
 import { useI18n } from "@/i18n/I18nProvider";
 import { contactLinks } from "@/data/catalog";
 import { Facebook, Phone, MessageCircle } from "lucide-react";
+import { TikTokIcon } from "@/components/icons/TikTokIcon";
 
 export const Footer = () => {
   const { t } = useI18n();
@@ -23,6 +24,10 @@ export const Footer = () => {
           <a href={contactLinks.facebook} target="_blank" rel="noreferrer"
              className="h-10 w-10 grid place-items-center rounded-full bg-secondary hover:bg-primary hover:text-primary-foreground transition-smooth">
             <Facebook className="h-5 w-5" />
+          </a>
+          <a href={contactLinks.tiktok} target="_blank" rel="noreferrer" aria-label="TikTok"
+             className="h-10 w-10 grid place-items-center rounded-full bg-secondary hover:bg-primary hover:text-primary-foreground transition-smooth">
+            <TikTokIcon className="h-5 w-5" />
           </a>
           <a href={`tel:${contactLinks.phone}`}
              className="h-10 w-10 grid place-items-center rounded-full bg-secondary hover:bg-primary hover:text-primary-foreground transition-smooth">
