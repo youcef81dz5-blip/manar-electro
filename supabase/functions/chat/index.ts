@@ -1,4 +1,4 @@
-// Manar Electro — Tech Assistant streaming chat via Lovable AI Gateway
+// Manar Electro — Tech Assistant streaming chat via Google Gemini API (user's key)
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -21,13 +21,15 @@ const SYSTEM_PROMPT_AR = `أنت "مساعد منار إلكترو" — مساع
 - إذا سُئلت من أنت، أجب: "أنا مساعد منار إلكترو التقني".
 - أجب بلغة المستخدم (العربية، الإنجليزية، أو الفرنسية).`;
 
+const MODEL = "gemini-2.0-flash";
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
     const { messages, language } = await req.json();
-    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-    if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY not configured");
+    const GEMINI_API_KEY = Deno.env.get("GEMINI_API_KEY");
+    if (!GEMINI_API_KEY) throw new Error("GEMINI_API_KEY not configured");
 
     const langNote =
       language === "en"
@@ -36,51 +38,102 @@ Deno.serve(async (req) => {
         ? "\n\nL'utilisateur préfère le français. Répondez en français."
         : "\n\nالمستخدم يفضل العربية. أجب بالعربية الفصحى البسيطة.";
 
-    const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+    // Convert OpenAI-style messages to Gemini "contents" format
+    const contents = (messages as Array<{ role: string; content: string }>).map((m) => ({
+      role: m.role === "assistant" ? "model" : "user",
+      parts: [{ text: m.content }],
+    }));
+
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:streamGenerateContent?alt=sse&key=${GEMINI_API_KEY}`;
+
+    const upstream = await fetch(url, {
       method: "POST",
-      headers: {
-        Authorization: `Bearer ${LOVABLE_API_KEY}`,
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        model: "google/gemini-3-flash-preview",
-        messages: [
-          { role: "system", content: SYSTEM_PROMPT_AR + langNote },
-          ...messages,
-        ],
-        stream: true,
+        systemInstruction: { parts: [{ text: SYSTEM_PROMPT_AR + langNote }] },
+        contents,
       }),
     });
 
-    if (!response.ok) {
-      if (response.status === 429) {
+    if (!upstream.ok || !upstream.body) {
+      const t = await upstream.text();
+      console.error("Gemini error:", upstream.status, t);
+      if (upstream.status === 429) {
         return new Response(JSON.stringify({ error: "rate_limit" }), {
           status: 429,
           headers: { ...corsHeaders, "Content-Type": "application/json" },
         });
       }
-      if (response.status === 402) {
-        return new Response(JSON.stringify({ error: "payment_required" }), {
-          status: 402,
+      if (upstream.status === 401 || upstream.status === 403) {
+        return new Response(JSON.stringify({ error: "invalid_api_key" }), {
+          status: 401,
           headers: { ...corsHeaders, "Content-Type": "application/json" },
         });
       }
-      const t = await response.text();
-      console.error("AI gateway error:", response.status, t);
-      return new Response(JSON.stringify({ error: "gateway_error" }), {
+      return new Response(JSON.stringify({ error: "gateway_error", detail: t }), {
         status: 500,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
 
-    return new Response(response.body, {
+    // Transform Gemini SSE -> OpenAI-compatible SSE so the frontend doesn't change.
+    const reader = upstream.body.getReader();
+    const decoder = new TextDecoder();
+    const encoder = new TextEncoder();
+
+    const stream = new ReadableStream({
+      async start(controller) {
+        let buffer = "";
+        try {
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            buffer += decoder.decode(value, { stream: true });
+
+            let nl: number;
+            while ((nl = buffer.indexOf("\n")) !== -1) {
+              let line = buffer.slice(0, nl);
+              buffer = buffer.slice(nl + 1);
+              if (line.endsWith("\r")) line = line.slice(0, -1);
+              if (!line.startsWith("data: ")) continue;
+              const json = line.slice(6).trim();
+              if (!json) continue;
+              try {
+                const parsed = JSON.parse(json);
+                const text =
+                  parsed?.candidates?.[0]?.content?.parts
+                    ?.map((p: { text?: string }) => p.text ?? "")
+                    .join("") ?? "";
+                if (text) {
+                  const payload = {
+                    choices: [{ delta: { content: text } }],
+                  };
+                  controller.enqueue(
+                    encoder.encode(`data: ${JSON.stringify(payload)}\n\n`),
+                  );
+                }
+              } catch (e) {
+                console.error("parse error:", e, json);
+              }
+            }
+          }
+          controller.enqueue(encoder.encode("data: [DONE]\n\n"));
+          controller.close();
+        } catch (e) {
+          console.error("stream error:", e);
+          controller.error(e);
+        }
+      },
+    });
+
+    return new Response(stream, {
       headers: { ...corsHeaders, "Content-Type": "text/event-stream" },
     });
   } catch (e) {
     console.error("chat error:", e);
     return new Response(
       JSON.stringify({ error: e instanceof Error ? e.message : "unknown" }),
-      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } },
     );
   }
 });
