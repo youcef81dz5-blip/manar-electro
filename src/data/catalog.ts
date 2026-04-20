@@ -44,7 +44,7 @@ export const WHATSAPP_NUMBER = "213671995077"; // no '+' for wa.me
 
 export const contactLinks = {
   whatsapp: `https://wa.me/${WHATSAPP_NUMBER}`,
-  facebook: "https://facebook.com/manarelectro",
+  facebook: "https://www.facebook.com/manardjm",
   tiktok: "https://www.tiktok.com/@merabtihouari",
   phone: SHOP_PHONE,
 };
