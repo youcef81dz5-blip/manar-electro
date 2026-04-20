@@ -16,7 +16,7 @@ const categoryIcons = [
 ];
 
 const Home = () => {
-  const { t, dir } = useI18n();
+  const { t, dir, lang } = useI18n();
   const featured = products.slice(0, 4);
   const Arrow = dir === "rtl" ? "←" : "→";
 
@@ -113,8 +113,8 @@ const Home = () => {
           {services.slice(0, 6).map((s) => (
             <div key={s.id} className="group rounded-xl bg-gradient-card border border-border/50 p-6 transition-smooth hover:border-primary/50 hover:shadow-glow">
               <div className="text-4xl mb-3">{s.emoji}</div>
-              <h3 className="font-bold text-lg mb-2">{s.name[useI18n().lang]}</h3>
-              <p className="text-sm text-muted-foreground line-clamp-3">{s.description[useI18n().lang]}</p>
+              <h3 className="font-bold text-lg mb-2">{s.name[lang]}</h3>
+              <p className="text-sm text-muted-foreground line-clamp-3">{s.description[lang]}</p>
             </div>
           ))}
         </div>
