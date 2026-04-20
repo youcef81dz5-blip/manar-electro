@@ -2,8 +2,9 @@ import { Link, NavLink, useLocation } from "react-router-dom";
 import { useState } from "react";
 import { useI18n } from "@/i18n/I18nProvider";
 import { Lang } from "@/i18n/translations";
+import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Globe, Zap } from "lucide-react";
+import { Menu, X, Globe, Zap, Shield } from "lucide-react";
 import { cn } from "@/lib/utils";
 import logo from "@/assets/logo.png";
 
@@ -15,6 +16,7 @@ const langs: { code: Lang; label: string }[] = [
 
 export const Header = () => {
   const { t, lang, setLang } = useI18n();
+  const { isAdmin } = useAuth();
   const [open, setOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
   const location = useLocation();
@@ -85,6 +87,12 @@ export const Header = () => {
               </div>
             )}
           </div>
+
+          {isAdmin && (
+            <Button asChild variant="outline" size="sm" className="gap-1.5 hidden sm:inline-flex">
+              <Link to="/admin"><Shield className="h-4 w-4" /> Admin</Link>
+            </Button>
+          )}
 
           <button
             className="lg:hidden p-2 rounded-md hover:bg-secondary transition-smooth"

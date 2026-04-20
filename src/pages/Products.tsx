@@ -1,8 +1,9 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useI18n } from "@/i18n/I18nProvider";
-import { products, CategoryType } from "@/data/catalog";
+import { products as staticProducts, CategoryType, Product } from "@/data/catalog";
 import { ProductCard } from "@/components/ProductCard";
+import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
 
 const categoryKeyMap: Record<CategoryType, keyof ReturnType<typeof useI18n>["t"]["categories"] | null> = {
@@ -19,12 +20,42 @@ const Products = () => {
   const [params, setParams] = useSearchParams();
   const initial = (params.get("cat") as CategoryType | null) ?? "all";
   const [filter, setFilter] = useState<CategoryType | "all">(initial);
+  const [dbProducts, setDbProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+    supabase
+      .from("products")
+      .select("*")
+      .order("created_at", { ascending: false })
+      .then(({ data }) => {
+        if (!data) return;
+        setDbProducts(
+          data.map((p: any) => ({
+            id: p.id,
+            category: p.category as CategoryType,
+            name: { ar: p.name_ar, en: p.name_en, fr: p.name_fr },
+            shortDescription: {
+              ar: p.short_description_ar,
+              en: p.short_description_en,
+              fr: p.short_description_fr,
+            },
+            price: p.price ?? undefined,
+            isAvailable: p.is_available,
+            tags: p.tags ?? [],
+            emoji: p.emoji,
+            image: p.image_url ?? undefined,
+          }))
+        );
+      });
+  }, []);
+
+  const all = useMemo(() => [...dbProducts, ...staticProducts], [dbProducts]);
 
   const cats: (CategoryType | "all")[] = ["all", "phones", "tv_box", "cctv", "mosque_audio", "conversion_service"];
 
   const list = useMemo(
-    () => (filter === "all" ? products : products.filter((p) => p.category === filter)),
-    [filter]
+    () => (filter === "all" ? all : all.filter((p) => p.category === filter)),
+    [filter, all]
   );
 
   const handle = (c: CategoryType | "all") => {
