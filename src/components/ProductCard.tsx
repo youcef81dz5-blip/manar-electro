@@ -14,8 +14,17 @@ export const ProductCard = ({ product }: { product: Product }) => {
 
   return (
     <div className="group flex flex-col rounded-xl bg-gradient-card border border-border/50 overflow-hidden transition-smooth hover:border-primary/50 hover:shadow-glow">
-      <div className="aspect-[4/3] grid place-items-center bg-secondary/40 text-7xl border-b border-border/50">
-        <span className="transition-smooth group-hover:scale-110">{product.emoji}</span>
+      <div className="aspect-[4/3] grid place-items-center bg-secondary/40 text-7xl border-b border-border/50 overflow-hidden">
+        {product.image ? (
+          <img
+            src={product.image}
+            alt={product.name[lang]}
+            loading="lazy"
+            className="w-full h-full object-contain transition-smooth group-hover:scale-105"
+          />
+        ) : (
+          <span className="transition-smooth group-hover:scale-110">{product.emoji}</span>
+        )}
       </div>
       <div className="p-4 flex flex-col flex-1 gap-2">
         <h3 className="font-semibold leading-tight line-clamp-1">{product.name[lang]}</h3>

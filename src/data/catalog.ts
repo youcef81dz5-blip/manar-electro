@@ -28,6 +28,7 @@ export type Product = {
   isAvailable: boolean;
   tags: string[];
   emoji: string;
+  image?: string;
 };
 
 export type Service = {
@@ -82,6 +83,21 @@ export const products: Product[] = [
       fr: "Android TV, 4K HDR, Google Assistant.",
     },
     price: "12,500 DA", isAvailable: true, tags: ["Android", "4K", "HDR"],
+  },
+  {
+    id: "p3b", category: "tv_box", emoji: "📺",
+    image: new URL("../assets/products/onn-google-tv-4k.webp", import.meta.url).href,
+    name: {
+      ar: "TV Box Onn Google TV 4K (أصلي)",
+      en: "Onn Google TV 4K Box (Original)",
+      fr: "Box Onn Google TV 4K (Original)",
+    },
+    shortDescription: {
+      ar: "Google TV أصلي، دقة 4K، HDMI، Bluetooth، تحكم صوتي بـ Google Assistant.",
+      en: "Original Google TV, 4K UHD, HDMI, Bluetooth, Google Assistant voice remote.",
+      fr: "Google TV original, 4K UHD, HDMI, Bluetooth, télécommande vocale Google Assistant.",
+    },
+    price: "—", isAvailable: true, tags: ["Onn", "Google TV", "4K", "Bluetooth", "HDMI"],
   },
   {
     id: "p4", category: "tv_box", emoji: "🛰️",
