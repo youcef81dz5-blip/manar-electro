@@ -38,6 +38,14 @@ export const Footer = () => {
       </div>
       <div className="border-t border-border/50 py-4 text-center text-xs text-muted-foreground">
         © {new Date().getFullYear()} {t.brand} — {t.footer.rights}
+        <Link
+          to="/auth"
+          aria-label="Admin"
+          title="Admin"
+          className="inline-block ml-2 opacity-30 hover:opacity-100 hover:text-primary transition-smooth select-none"
+        >
+          ·
+        </Link>
       </div>
     </footer>
   );
