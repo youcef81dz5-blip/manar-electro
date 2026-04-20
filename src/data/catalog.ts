@@ -39,8 +39,8 @@ export type Service = {
   emoji: string;
 };
 
-export const SHOP_PHONE = "+213555000000"; // placeholder — admin can change
-export const WHATSAPP_NUMBER = "213555000000"; // no '+' for wa.me
+export const SHOP_PHONE = "+213671995077";
+export const WHATSAPP_NUMBER = "213671995077"; // no '+' for wa.me
 
 export const contactLinks = {
   whatsapp: `https://wa.me/${WHATSAPP_NUMBER}`,
