@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { MessageCircle, Facebook, Phone, MapPin, Clock } from "lucide-react";
+import { TikTokIcon } from "@/components/icons/TikTokIcon";
 import { toast } from "sonner";
 
 const Contact = () => {
@@ -28,6 +29,7 @@ const Contact = () => {
   const cards = [
     { icon: MessageCircle, label: t.contact.whatsapp, href: contactLinks.whatsapp, color: "text-primary" },
     { icon: Facebook, label: t.contact.facebook, href: contactLinks.facebook, color: "text-primary" },
+    { icon: TikTokIcon, label: "TikTok", href: contactLinks.tiktok, color: "text-foreground" },
     { icon: Phone, label: t.contact.phone, href: `tel:${contactLinks.phone}`, color: "text-accent" },
   ];
 
@@ -40,7 +42,7 @@ const Contact = () => {
 
       <div className="grid lg:grid-cols-2 gap-8">
         <div className="space-y-4">
-          <div className="grid sm:grid-cols-3 gap-3">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
             {cards.map(({ icon: Icon, label, href, color }) => (
               <a key={label} href={href} target="_blank" rel="noreferrer"
                  className="rounded-xl bg-gradient-card border border-border/50 p-5 text-center transition-smooth hover:border-primary/50 hover:shadow-glow">
