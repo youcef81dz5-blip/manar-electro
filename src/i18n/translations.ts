@@ -2,7 +2,7 @@ export type Lang = "ar" | "en" | "fr";
 
 export const translations = {
   ar: {
-    brand: "منار إلكترو",
+    brand: "Manar Electro",
     nav: { home: "الرئيسية", products: "المنتجات", services: "الخدمات", chatbot: "المساعد التقني", contact: "تواصل معنا" },
     hero: {
       badge: "محل إلكترونيات و خدمات تقنية",
