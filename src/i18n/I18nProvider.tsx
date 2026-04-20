@@ -1,10 +1,12 @@
 import { createContext, useContext, useEffect, useMemo, useState, ReactNode } from "react";
 import { Lang, translations } from "./translations";
 
+type Dict = { [K in keyof typeof translations.ar]: typeof translations.ar[K] };
+
 type Ctx = {
   lang: Lang;
   setLang: (l: Lang) => void;
-  t: (typeof translations)["ar"];
+  t: Dict;
   dir: "rtl" | "ltr";
 };
 
@@ -24,7 +26,7 @@ export const I18nProvider = ({ children }: { children: ReactNode }) => {
     localStorage.setItem("lang", lang);
   }, [lang, dir]);
 
-  const value = useMemo<Ctx>(() => ({ lang, setLang: setLangState, t: translations[lang], dir }), [lang, dir]);
+  const value = useMemo<Ctx>(() => ({ lang, setLang: setLangState, t: translations[lang] as unknown as Dict, dir }), [lang, dir]);
   return <I18nCtx.Provider value={value}>{children}</I18nCtx.Provider>;
 };
 
