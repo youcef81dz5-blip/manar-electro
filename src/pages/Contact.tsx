@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { MessageCircle, Facebook, Phone, MapPin, Clock } from "lucide-react";
 import { TikTokIcon } from "@/components/icons/TikTokIcon";
 import { toast } from "sonner";
-import shopLocation from "@/assets/shop-location.jpg";
+
 
 const Contact = () => {
   const { t, lang } = useI18n();
@@ -72,19 +72,6 @@ const Contact = () => {
                 <p className="text-xs text-muted-foreground">{t.contact.location}</p>
                 <p className="font-semibold group-hover:text-primary transition-smooth">{t.contact.address}</p>
               </div>
-            </a>
-            <a
-              href="https://maps.app.goo.gl/VxhXsABYR4CxAN3E7"
-              target="_blank"
-              rel="noreferrer"
-              className="block rounded-lg overflow-hidden border border-border/50 aspect-video relative group"
-            >
-              <img
-                src={shopLocation}
-                alt="Manar Electro storefront"
-                loading="lazy"
-                className="absolute inset-0 w-full h-full object-cover transition-smooth group-hover:scale-105"
-              />
             </a>
             <div className="rounded-lg overflow-hidden border border-border/50 aspect-video">
               <iframe
