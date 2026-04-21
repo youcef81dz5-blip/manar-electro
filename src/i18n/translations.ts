@@ -3,7 +3,7 @@ export type Lang = "ar" | "en" | "fr";
 export const translations = {
   ar: {
     brand: "Manar Electro",
-    nav: { home: "الرئيسية", products: "المنتجات", services: "الخدمات", chatbot: "المساعد التقني", contact: "تواصل معنا" },
+    nav: { home: "الرئيسية", products: "المنتجات", services: "الخدمات", tvApps: "تطبيقات TV", chatbot: "المساعد التقني", contact: "تواصل معنا" },
     hero: {
       badge: "محل إلكترونيات و خدمات تقنية",
       title: "كل احتياجاتك التقنية في مكان واحد",
@@ -70,7 +70,7 @@ export const translations = {
   },
   en: {
     brand: "Manar Electro",
-    nav: { home: "Home", products: "Products", services: "Services", chatbot: "Tech Assistant", contact: "Contact" },
+    nav: { home: "Home", products: "Products", services: "Services", tvApps: "TV Apps", chatbot: "Tech Assistant", contact: "Contact" },
     hero: {
       badge: "Electronics & Tech Services",
       title: "All your tech needs in one place",
@@ -137,7 +137,7 @@ export const translations = {
   },
   fr: {
     brand: "Manar Electro",
-    nav: { home: "Accueil", products: "Produits", services: "Services", chatbot: "Assistant Tech", contact: "Contact" },
+    nav: { home: "Accueil", products: "Produits", services: "Services", tvApps: "Apps TV", chatbot: "Assistant Tech", contact: "Contact" },
     hero: {
       badge: "Électronique & Services Tech",
       title: "Tous vos besoins tech au même endroit",
