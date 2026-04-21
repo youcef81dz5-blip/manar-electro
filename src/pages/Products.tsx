@@ -26,6 +26,7 @@ const Products = () => {
     supabase
       .from("products")
       .select("*")
+      .order("sort_order", { ascending: false })
       .order("created_at", { ascending: false })
       .then(({ data }) => {
         if (!data) return;
