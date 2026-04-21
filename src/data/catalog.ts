@@ -98,12 +98,12 @@ export const services: Service[] = [
     startingPrice: "—",
   },
   {
-    id: "s5", type: "cassette_to_usb", emoji: "💾",
-    name: { ar: "تحويل الكاسيت إلى USB", en: "Cassette to USB", fr: "Cassette vers USB" },
+    id: "s5", type: "cassette_to_usb", emoji: "📼",
+    name: { ar: "تحويل أشرطة VHS إلى USB/DVD", en: "VHS Tapes to USB/DVD", fr: "Cassettes VHS vers USB/DVD" },
     description: {
-      ar: "احفظ ذكرياتك! تحويل الأشرطة القديمة إلى ملفات رقمية بجودة عالية.",
-      en: "Preserve your memories! Convert old tapes to high-quality digital files.",
-      fr: "Préservez vos souvenirs ! Conversion des cassettes en fichiers numériques.",
+      ar: "احفظ ذكرياتك! تحويل أشرطة VHS القديمة إلى USB أو DVD بجودة عالية.",
+      en: "Preserve your memories! Convert old VHS tapes to USB or DVD in high quality.",
+      fr: "Préservez vos souvenirs ! Conversion des cassettes VHS vers USB ou DVD en haute qualité.",
     },
     startingPrice: "500 DA",
   },
