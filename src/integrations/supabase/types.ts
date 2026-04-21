@@ -29,6 +29,7 @@ export type Database = {
           short_description_ar: string
           short_description_en: string
           short_description_fr: string
+          sort_order: number
           tags: string[]
           updated_at: string
         }
@@ -46,6 +47,7 @@ export type Database = {
           short_description_ar?: string
           short_description_en?: string
           short_description_fr?: string
+          sort_order?: number
           tags?: string[]
           updated_at?: string
         }
@@ -63,6 +65,7 @@ export type Database = {
           short_description_ar?: string
           short_description_en?: string
           short_description_fr?: string
+          sort_order?: number
           tags?: string[]
           updated_at?: string
         }
