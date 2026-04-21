@@ -10,6 +10,7 @@ import { ProtectedAdmin } from "@/components/ProtectedAdmin";
 import Home from "./pages/Home";
 import Products from "./pages/Products";
 import Services from "./pages/Services";
+import TVApps from "./pages/TVApps";
 import Contact from "./pages/Contact";
 import Chatbot from "./pages/Chatbot";
 import Auth from "./pages/Auth";
@@ -31,6 +32,7 @@ const App = () => (
                 <Route path="/" element={<Home />} />
                 <Route path="/products" element={<Products />} />
                 <Route path="/services" element={<Services />} />
+                <Route path="/tv-apps" element={<TVApps />} />
                 <Route path="/chatbot" element={<Chatbot />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/auth" element={<Auth />} />

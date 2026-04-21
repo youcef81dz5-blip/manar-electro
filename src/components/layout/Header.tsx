@@ -25,6 +25,7 @@ export const Header = () => {
     { to: "/", label: t.nav.home },
     { to: "/products", label: t.nav.products },
     { to: "/services", label: t.nav.services },
+    { to: "/tv-apps", label: t.nav.tvApps },
     { to: "/chatbot", label: t.nav.chatbot },
     { to: "/contact", label: t.nav.contact },
   ];
