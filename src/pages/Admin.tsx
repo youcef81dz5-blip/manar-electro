@@ -35,6 +35,7 @@ type DBProduct = {
   tags: string[];
   emoji: string;
   image_url: string | null;
+  sort_order: number;
 };
 
 const CATEGORIES = ["phones", "tv_box", "cctv", "mosque_audio", "conversion_service", "accessories"];
@@ -52,6 +53,7 @@ const productSchema = z.object({
   tags: z.string().trim().max(300),
   emoji: z.string().trim().max(10),
   image_url: z.string().trim().max(1000),
+  sort_order: z.number().int().min(0).max(99999),
 });
 
 const empty = {
@@ -67,6 +69,7 @@ const empty = {
   tags: "",
   emoji: "📦",
   image_url: "",
+  sort_order: 0,
 };
 
 const Admin = () => {
@@ -84,6 +87,7 @@ const Admin = () => {
     const { data, error } = await supabase
       .from("products")
       .select("*")
+      .order("sort_order", { ascending: false })
       .order("created_at", { ascending: false });
     if (error) toast.error(error.message);
     setItems((data as DBProduct[]) || []);
@@ -113,6 +117,7 @@ const Admin = () => {
       tags: p.tags.join(", "),
       emoji: p.emoji,
       image_url: p.image_url ?? "",
+      sort_order: p.sort_order ?? 0,
     });
     setOpen(true);
   };
@@ -163,6 +168,7 @@ const Admin = () => {
         tags: form.tags.split(",").map((t) => t.trim()).filter(Boolean),
         emoji: form.emoji.trim() || "📦",
         image_url: form.image_url.trim() || null,
+        sort_order: Number(form.sort_order) || 0,
       };
       if (editing) {
         const { error } = await supabase.from("products").update(payload).eq("id", editing.id);
@@ -225,7 +231,7 @@ const Admin = () => {
               <div className="flex-1 min-w-0">
                 <div className="font-semibold truncate">{p.name_ar}</div>
                 <div className="text-xs text-muted-foreground truncate">
-                  {p.category} · {p.price || "—"} · {p.is_available ? "متوفر" : "غير متوفر"}
+                  {p.category} · {p.price || "—"} · {p.is_available ? "متوفر" : "غير متوفر"} · ترتيب: {p.sort_order}
                 </div>
               </div>
               <Button size="sm" variant="outline" onClick={() => openEdit(p)} className="gap-1.5">
@@ -305,7 +311,7 @@ const Admin = () => {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-3 gap-3">
               <div>
                 <Label>الوسوم (مفصولة بفواصل)</Label>
                 <Input value={form.tags} onChange={(e) => setForm({ ...form, tags: e.target.value })} placeholder="Samsung, 5G" />
@@ -313,6 +319,15 @@ const Admin = () => {
               <div>
                 <Label>الإيموجي</Label>
                 <Input value={form.emoji} onChange={(e) => setForm({ ...form, emoji: e.target.value })} />
+              </div>
+              <div>
+                <Label>الترتيب (الأكبر يظهر أولاً)</Label>
+                <Input
+                  type="number"
+                  min={0}
+                  value={form.sort_order}
+                  onChange={(e) => setForm({ ...form, sort_order: Number(e.target.value) || 0 })}
+                />
               </div>
             </div>
 
