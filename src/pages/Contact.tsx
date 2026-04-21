@@ -60,12 +60,28 @@ const Contact = () => {
                 <p className="font-semibold">{t.contact.hoursValue}</p>
               </div>
             </div>
-            <div className="flex items-start gap-3">
+            <a
+              href="https://maps.app.goo.gl/VxhXsABYR4CxAN3E7"
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-start gap-3 group"
+            >
               <MapPin className="h-5 w-5 text-accent mt-0.5" />
               <div>
                 <p className="text-xs text-muted-foreground">{t.contact.location}</p>
-                <p className="font-semibold">{t.contact.address}</p>
+                <p className="font-semibold group-hover:text-primary transition-smooth">{t.contact.address}</p>
               </div>
+            </a>
+            <div className="rounded-lg overflow-hidden border border-border/50 aspect-video">
+              <iframe
+                src="https://maps.google.com/maps?q=36.7538,3.0588&hl=ar&z=15&output=embed"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Manar Electro Location"
+              />
             </div>
           </div>
         </div>
