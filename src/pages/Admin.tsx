@@ -47,6 +47,8 @@ type DBTVApp = {
   apk_url: string;
   is_available: boolean;
   sort_order: number;
+  is_free: boolean;
+  subscription_note: string;
 };
 
 const CATEGORIES = ["phones", "tv_box", "cctv", "mosque_audio", "conversion_service", "accessories"];
@@ -90,6 +92,8 @@ const tvAppSchema = z.object({
   apk_url: z.string().trim().min(1, "رابط APK مطلوب").max(1000),
   is_available: z.boolean(),
   sort_order: z.number().int().min(0).max(99999),
+  is_free: z.boolean(),
+  subscription_note: z.string().trim().max(500),
 });
 
 const emptyApp = {
@@ -99,6 +103,8 @@ const emptyApp = {
   apk_url: "",
   is_available: true,
   sort_order: 0,
+  is_free: true,
+  subscription_note: "",
 };
 
 const Admin = () => {
@@ -258,6 +264,8 @@ const Admin = () => {
       apk_url: a.apk_url,
       is_available: a.is_available,
       sort_order: a.sort_order,
+      is_free: a.is_free ?? true,
+      subscription_note: a.subscription_note ?? "",
     });
     setAppOpen(true);
   };
@@ -312,6 +320,8 @@ const Admin = () => {
         apk_url: appForm.apk_url.trim(),
         is_available: appForm.is_available,
         sort_order: Number(appForm.sort_order) || 0,
+        is_free: appForm.is_free,
+        subscription_note: appForm.subscription_note.trim(),
       };
       if (editingApp) {
         const { error } = await supabase.from("tv_apps").update(payload).eq("id", editingApp.id);
@@ -634,6 +644,27 @@ const Admin = () => {
                 <Switch checked={appForm.is_available} onCheckedChange={(v) => setAppForm({ ...appForm, is_available: v })} />
                 <Label>منشور</Label>
               </div>
+            </div>
+
+            <div className="rounded-lg border border-border/60 p-3 space-y-3 bg-secondary/20">
+              <div className="flex items-center gap-3">
+                <Switch
+                  checked={appForm.is_free}
+                  onCheckedChange={(v) => setAppForm({ ...appForm, is_free: v })}
+                />
+                <Label>{appForm.is_free ? "مجاني" : "باشتراك (يتطلب تواصل عبر واتساب)"}</Label>
+              </div>
+              {!appForm.is_free && (
+                <div>
+                  <Label>تفاصيل الاشتراك (اختياري — تظهر في رسالة واتساب)</Label>
+                  <Textarea
+                    rows={2}
+                    value={appForm.subscription_note}
+                    onChange={(e) => setAppForm({ ...appForm, subscription_note: e.target.value })}
+                    placeholder="مثال: اشتراك شهري 1500 DA / سنوي 12000 DA"
+                  />
+                </div>
+              )}
             </div>
           </div>
           <DialogFooter>
