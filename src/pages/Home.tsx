@@ -93,46 +93,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* TV APPS BANNER */}
-      <section className="container py-8">
-        <Link
-          to="/tv-apps"
-          className="group relative block overflow-hidden rounded-2xl border border-primary/30 bg-gradient-primary p-6 md:p-10 shadow-glow transition-smooth hover:shadow-elegant"
-        >
-          <div className="absolute inset-0 grid-pattern opacity-20 pointer-events-none" />
-          <div className="absolute -end-10 -top-10 h-40 w-40 rounded-full bg-primary-foreground/10 blur-3xl" />
-          <div className="relative flex flex-col md:flex-row items-center justify-between gap-6">
-            <div className="flex items-center gap-4 text-primary-foreground">
-              <div className="h-14 w-14 grid place-items-center rounded-xl bg-primary-foreground/15 backdrop-blur">
-                <AppWindow className="h-7 w-7" />
-              </div>
-              <div>
-                <div className="text-xs font-semibold uppercase tracking-wider opacity-80">
-                  {lang === "ar" ? "متجر التطبيقات" : lang === "fr" ? "Boutique d'applications" : "Apps Store"}
-                </div>
-                <h3 className="text-2xl md:text-3xl font-bold">
-                  {lang === "ar"
-                    ? "حمّل تطبيقات TV مجاناً"
-                    : lang === "fr"
-                    ? "Téléchargez des applis TV gratuitement"
-                    : "Download TV Apps for Free"}
-                </h3>
-                <p className="text-sm md:text-base opacity-90 mt-1">
-                  {lang === "ar"
-                    ? "مجموعة تطبيقات مختارة لأجهزة Smart TV و TV Box"
-                    : lang === "fr"
-                    ? "Sélection d'applis pour Smart TV et TV Box"
-                    : "Curated apps for Smart TV and TV Box"}
-                </p>
-              </div>
-            </div>
-            <Button size="lg" variant="secondary" className="gap-2 group-hover:scale-105 transition-smooth">
-              <Download className="h-5 w-5" />
-              {lang === "ar" ? "ادخل للمتجر" : lang === "fr" ? "Entrer dans la boutique" : "Enter Store"}
-            </Button>
-          </div>
-        </Link>
-      </section>
       <section className="container py-12">
         <div className="flex items-end justify-between mb-8">
           <div>
