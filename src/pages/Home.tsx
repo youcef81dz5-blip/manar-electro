@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useI18n } from "@/i18n/I18nProvider";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, MessageSquare, Smartphone, Tv, Camera, Building2, Disc3, Wrench } from "lucide-react";
+import { ArrowRight, MessageSquare, Smartphone, Tv, Camera, Building2, Disc3, Wrench, Download, AppWindow } from "lucide-react";
 import heroImg from "@/assets/hero.jpg";
 import { products, services } from "@/data/catalog";
 import { ProductCard } from "@/components/ProductCard";
