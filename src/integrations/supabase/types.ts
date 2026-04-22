@@ -71,6 +71,42 @@ export type Database = {
         }
         Relationships: []
       }
+      tv_apps: {
+        Row: {
+          apk_url: string
+          created_at: string
+          description: string
+          id: string
+          image_url: string | null
+          is_available: boolean
+          name: string
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          apk_url: string
+          created_at?: string
+          description?: string
+          id?: string
+          image_url?: string | null
+          is_available?: boolean
+          name: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          apk_url?: string
+          created_at?: string
+          description?: string
+          id?: string
+          image_url?: string | null
+          is_available?: boolean
+          name?: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
