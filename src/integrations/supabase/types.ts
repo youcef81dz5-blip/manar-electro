@@ -79,8 +79,10 @@ export type Database = {
           id: string
           image_url: string | null
           is_available: boolean
+          is_free: boolean
           name: string
           sort_order: number
+          subscription_note: string
           updated_at: string
         }
         Insert: {
@@ -90,8 +92,10 @@ export type Database = {
           id?: string
           image_url?: string | null
           is_available?: boolean
+          is_free?: boolean
           name: string
           sort_order?: number
+          subscription_note?: string
           updated_at?: string
         }
         Update: {
@@ -101,8 +105,10 @@ export type Database = {
           id?: string
           image_url?: string | null
           is_available?: boolean
+          is_free?: boolean
           name?: string
           sort_order?: number
+          subscription_note?: string
           updated_at?: string
         }
         Relationships: []

@@ -1,0 +1,3 @@
+ALTER TABLE public.tv_apps 
+ADD COLUMN is_free BOOLEAN NOT NULL DEFAULT true,
+ADD COLUMN subscription_note TEXT NOT NULL DEFAULT '';
