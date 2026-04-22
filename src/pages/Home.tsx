@@ -44,6 +44,12 @@ const Home = () => {
                   {t.hero.ctaChat}
                 </Link>
               </Button>
+              <Button asChild size="default" className="bg-accent text-accent-foreground hover:opacity-90 gap-2 shadow-glow">
+                <Link to="/tv-apps">
+                  <Download className="h-4 w-4" />
+                  {lang === "ar" ? "حمّل تطبيقات TV مجاناً" : lang === "fr" ? "Applis TV gratuites" : "Free TV Apps"}
+                </Link>
+              </Button>
               <Button asChild size="lg" variant="outline" className="border-primary/30 hover:bg-primary/10 gap-2">
                 <Link to="/products">
                   {t.hero.ctaProducts}
