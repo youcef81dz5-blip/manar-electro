@@ -3,7 +3,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useI18n } from "@/i18n/I18nProvider";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Download, Loader2, Tv, Package } from "lucide-react";
+import { Download, Loader2, Tv, Package, MessageCircle, Crown, Gift } from "lucide-react";
+import { buildWhatsAppLink } from "@/data/catalog";
 
 type TVApp = {
   id: string;
@@ -13,6 +14,8 @@ type TVApp = {
   apk_url: string;
   is_available: boolean;
   sort_order: number;
+  is_free: boolean;
+  subscription_note: string;
 };
 
 const TVApps = () => {
@@ -34,6 +37,13 @@ const TVApps = () => {
   }, []);
 
   const isAr = lang === "ar";
+
+  const subscribeMessage = (app: TVApp) => {
+    const note = app.subscription_note ? `\n${app.subscription_note}` : "";
+    if (isAr) return `السلام عليكم، أرغب في طلب اشتراك لتطبيق: ${app.name}${note}`;
+    if (lang === "fr") return `Bonjour, je souhaite m'abonner à l'application : ${app.name}${note}`;
+    return `Hello, I'd like to subscribe to the app: ${app.name}${note}`;
+  };
 
   return (
     <div className="container py-12">
@@ -68,9 +78,9 @@ const TVApps = () => {
           {apps.map((app) => (
             <article
               key={app.id}
-              className="group rounded-2xl border border-border/60 bg-card overflow-hidden hover:border-primary/50 hover:shadow-lg transition-all"
+              className="group rounded-2xl border border-border/60 bg-card overflow-hidden hover:border-primary/50 hover:shadow-lg transition-all flex flex-col"
             >
-              <div className="aspect-video bg-secondary/40 overflow-hidden grid place-items-center">
+              <div className="aspect-video bg-secondary/40 overflow-hidden grid place-items-center relative">
                 {app.image_url ? (
                   <img
                     src={app.image_url}
@@ -81,24 +91,55 @@ const TVApps = () => {
                 ) : (
                   <Package className="h-14 w-14 text-muted-foreground/40" />
                 )}
+                <div className="absolute top-2 end-2">
+                  {app.is_free ? (
+                    <Badge className="gap-1 bg-emerald-500/90 hover:bg-emerald-500 text-white border-transparent">
+                      <Gift className="h-3 w-3" />
+                      {isAr ? "مجاني" : lang === "fr" ? "Gratuit" : "Free"}
+                    </Badge>
+                  ) : (
+                    <Badge className="gap-1 bg-amber-500/90 hover:bg-amber-500 text-white border-transparent">
+                      <Crown className="h-3 w-3" />
+                      {isAr ? "باشتراك" : lang === "fr" ? "Abonnement" : "Subscription"}
+                    </Badge>
+                  )}
+                </div>
               </div>
-              <div className="p-5">
+              <div className="p-5 flex-1 flex flex-col">
                 <h3 className="font-bold text-lg mb-1.5 truncate">{app.name}</h3>
                 {app.description && (
                   <p className="text-sm text-muted-foreground line-clamp-2 mb-4 min-h-[2.5rem]">
                     {app.description}
                   </p>
                 )}
-                <div className="flex items-center justify-between gap-2">
-                  <Badge variant="secondary" className="gap-1">
-                    <Package className="h-3 w-3" /> APK
-                  </Badge>
-                  <Button asChild size="sm" className="gap-1.5">
+                {!app.is_free && app.subscription_note && (
+                  <p className="text-xs text-amber-600 dark:text-amber-400 mb-3 line-clamp-2">
+                    {app.subscription_note}
+                  </p>
+                )}
+                <div className="flex items-center gap-2 mt-auto">
+                  <Button asChild size="sm" variant="outline" className="flex-1 gap-1.5">
                     <a href={app.apk_url} download target="_blank" rel="noopener noreferrer">
                       <Download className="h-4 w-4" />
-                      {isAr ? "تحميل" : lang === "fr" ? "Télécharger" : "Download"}
+                      {isAr ? "تحميل APK" : lang === "fr" ? "Télécharger" : "Download"}
                     </a>
                   </Button>
+                  {!app.is_free && (
+                    <Button
+                      asChild
+                      size="sm"
+                      className="flex-1 gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white"
+                    >
+                      <a
+                        href={buildWhatsAppLink(subscribeMessage(app))}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <MessageCircle className="h-4 w-4" />
+                        {isAr ? "اشتراك" : lang === "fr" ? "S'abonner" : "Subscribe"}
+                      </a>
+                    </Button>
+                  )}
                 </div>
               </div>
             </article>
