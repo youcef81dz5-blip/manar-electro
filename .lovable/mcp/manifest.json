@@ -1,0 +1,112 @@
+{
+  "version": 1,
+  "sdk_version": "0.24.0",
+  "path": "/mcp",
+  "auth": {
+    "type": "none"
+  },
+  "mcp": {
+    "server": {
+      "name": "manar-electro-mcp",
+      "version": "0.1.0",
+      "title": "Manar Electro"
+    },
+    "tools": [
+      {
+        "name": "list_products",
+        "title": "List products",
+        "description": "List Manar Electro's public product catalog (smartphones, TV boxes, CCTV, mosque audio, accessories) with names in Arabic/English/French, price, category, tags, and availability.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "category": {
+              "type": "string",
+              "enum": [
+                "phones",
+                "tv_box",
+                "cctv",
+                "mosque_audio",
+                "conversion_service",
+                "accessories"
+              ],
+              "description": "Optional category filter."
+            },
+            "limit": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 200,
+              "description": "Max results (default 100)."
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_tv_apps",
+        "title": "List TV apps",
+        "description": "List the TV apps published by Manar Electro (name, description, image, download URL, free-or-subscription flag, and subscription note).",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "only_free": {
+              "type": "boolean",
+              "description": "If true, return only free apps."
+            },
+            "limit": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 200
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_services",
+        "title": "List services",
+        "description": "List the technical services Manar Electro offers, with multilingual names and starting price when available.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_contact_info",
+        "title": "Get shop contact info",
+        "description": "Return Manar Electro's public contact details: phone, WhatsApp, Facebook, TikTok, map location, and coordinates.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}
